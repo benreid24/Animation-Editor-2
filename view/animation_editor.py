@@ -16,21 +16,10 @@ class AnimationEditor:
         self.TK_ROOT.resizable(True, True)
         self.TK_ROOT.iconbitmap('resources/icon.ico')
 
-        self.canvas = tk.Canvas(self.TK_ROOT)
-        self.x_scrollbar = tk.Scrollbar(self.TK_ROOT, orient='horizontal', command=self.canvas.xview)
-        self.y_scrollbar = tk.Scrollbar(self.TK_ROOT, orient='vertical', command=self.canvas.yview)
-        self.inner_frame = tk.Frame(self.canvas)
-
-        self.menu_bar = MenuBar(self.inner_frame)
-        self.edit_canvas = EditCanvas(self.inner_frame)
-        self.controls = Controls(self.inner_frame)
-        self.image_list = ImageList(self.inner_frame)
-
-        self.wid = self.canvas.create_window(0, 0, window=self.inner_frame)
-
-        self.y_scrollbar.pack(fill='y', expand=False, side='right')
-        self.x_scrollbar.pack(fill='x', expand=False, side='bottom')
-        self.canvas.pack(fill='both', expand=True, side='top')
+        self.menu_bar = MenuBar(self.TK_ROOT)
+        self.edit_canvas = EditCanvas(self.TK_ROOT)
+        self.controls = Controls(self.TK_ROOT)
+        self.image_list = ImageList(self.TK_ROOT)
 
         self.TK_ROOT.configure(menu=self.menu_bar)
         self.menu_bar.set_editor(self)
@@ -40,11 +29,6 @@ class AnimationEditor:
         self.edit_canvas.canvas.bind('<Motion>', self._mouse_motion)
 
         self.TK_ROOT.update()
-        self.canvas.configure(
-            scrollregion=self.canvas.bbox('all'),
-            xscrollcommand=self.x_scrollbar.set,
-            yscrollcommand=self.y_scrollbar.set
-        )
 
     def get_image_list(self):
         return self.image_list
