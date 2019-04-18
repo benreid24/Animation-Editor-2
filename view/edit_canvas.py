@@ -12,7 +12,7 @@ class EditCanvas(tk.Frame):
 
     def _check_click(self, event):
         items = self.canvas.find_overlapping(event.x, event.y, event.x+2, event.y+2)
-        if len(items) <= 1:
+        if len(items) <= 2:
             self._disable_all()
             controller.clear_active()
         else:
