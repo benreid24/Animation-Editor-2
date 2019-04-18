@@ -35,6 +35,7 @@ def update_view():
     canvas_view.clear()
     if frames_model.active_frame() in model.pieces.keys():
         for piece in model.pieces[frames_model.active_frame()]:
+            piece['img'] = images_model.get_image(piece['image_id'])
             canvas_view.add_piece(piece)
 
 
@@ -101,7 +102,6 @@ def change_image(piece):
     canvas_view.update_piece(piece)
     model.update_piece(frames_model.active_frame(), piece)
     actions_controller.update_piece_action(frames_model.active_frame(), old, piece)
-    # TODO Ensure undo/redo supports this
     _reorder_canvas()
 
 
