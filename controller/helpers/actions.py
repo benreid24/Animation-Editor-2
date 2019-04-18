@@ -110,6 +110,10 @@ def undo():
             frames_controller.update_view()
             pieces_controller.update_view()
 
+        elif action['type'] == 'toggle_loop':
+            frames_model.is_loop = not frames_model.is_loop
+            frames_controller.update_view()
+
         model.current_action -= 1
         controller.update_view()
 
@@ -177,7 +181,7 @@ def redo():
             pieces_controller.update_view()
 
         elif action['type'] == 'save':
-            view_util.popup('Oh Fuck', 'Your Peoplemon game save has been deleted')
+            view_util.popup('Awesome', 'Your Peoplemon game save has been restored')
 
         elif action['type'] == 'batch':
             if data['percent'] == 0:
@@ -207,6 +211,10 @@ def redo():
             i = frames_model.get_frame_position(data['start_frame'])
             interpolate_controller.interpolate(i, data['total_time'], data['frame_len'])
             pieces_controller.update_view()
+            frames_controller.update_view()
+
+        elif action['type'] == 'toggle_loop':
+            frames_model.is_loop = not frames_model.is_loop
             frames_controller.update_view()
 
         model.current_action += 1

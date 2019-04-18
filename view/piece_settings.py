@@ -47,6 +47,34 @@ class PieceSettings(tk.LabelFrame):
         self.piece['left_crop'] = xc
         controller.update_piece(old, self.piece)
 
+    def _chg_img(self):
+        x = self.xpos_entry.get()
+        y = self.ypos_entry.get()
+        xs = self.xscale_entry.get()
+        ys = self.yscale_entry.get()
+        r = self.rotation_scale.get()
+        xc = self.xcrop_entry.get()
+        yc = self.ycrop_entry.get()
+        wc = self.wcrop_entry.get()
+        hc = self.hcrop_entry.get()
+        t = self.trans_scale.get()
+
+        try:
+            x = float(x)
+            y = float(y)
+            xs = float(xs) / 100
+            ys = float(ys) / 100
+            xc = float(xc) / 100
+            yc = float(yc) / 100
+            wc = float(wc) / 100
+            hc = float(hc) / 100
+        except:
+            util.error('Must have a piece selected')
+            return
+
+        self.update_piece(self.piece)
+        controller.change_image(self.piece)
+
     def __init__(self, master):
         tk.LabelFrame.__init__(self, master, text='Image Options', padx=3, pady=3)
         self.piece = None
@@ -54,11 +82,13 @@ class PieceSettings(tk.LabelFrame):
         self.clone_but = tk.Button(self, text='Clone', command=controller.add_from_piece)
         self.delete_but = tk.Button(self, text='Delete', command=controller.remove_piece)
         self.update_but = tk.Button(self, text='Update', command=self._apply, background='#ff5555')
+        self.image_but = tk.Button(self, text='Change Image', command=self._chg_img, background='#ffff00')
         self.upbut = tk.Button(self, text='Move up', command=controller.move_piece_up)
         self.downbut = tk.Button(self, text='Move down', command=controller.move_piece_down)
         self.clone_but.grid(row=0, column=0, pady=5)
         self.delete_but.grid(row=0, column=1, pady=5)
         self.update_but.grid(row=0, column=2, pady=5)
+        self.image_but.grid(row=1, column=2)
         self.upbut.grid(row=0, column=3, pady=1)
         self.downbut.grid(row=1, column=3, pady=1)
 

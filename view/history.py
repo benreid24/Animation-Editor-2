@@ -2,6 +2,7 @@ import tkinter as tk
 
 from controller import actions as controller
 from controller import files as files_controller
+from controller import frames as frames_controller
 
 
 class Actions(tk.LabelFrame):
@@ -15,6 +16,9 @@ class Actions(tk.LabelFrame):
             self.set_active(controller.get_action_index())
         self.after(100, self._check)
 
+    def _loop_chg(self):
+        frames_controller.update_looping(self.looping_type.get())
+
     def __init__(self, master):
         tk.LabelFrame.__init__(self, master, text='Extras', padx=3, pady=3)
 
@@ -27,6 +31,10 @@ class Actions(tk.LabelFrame):
         self.undo_button.grid(row=1, column=1, pady=4, padx=3)
         self.redo_button.grid(row=1, column=2, pady=4, padx=3)
         self.preview_button.grid(row=1, column=3, padx=60)
+
+        self.looping_type = tk.IntVar()
+        self.loop_but = tk.Checkbutton(self, text='Loop on Finish', variable=self.looping_type, command=self._loop_chg)
+        self.loop_but.grid(row=2, column=3)
 
         self.action_list_frame = tk.LabelFrame(self, text='Actions')
         self.scrollbar = tk.Scrollbar(self.action_list_frame)
@@ -61,3 +69,6 @@ class Actions(tk.LabelFrame):
 
     def set_pos(self, x, y):
         self.pos_label.config(text='Mouse Position: ({}, {})'.format(x, y))
+
+    def set_is_loop(self, is_loop):
+        self.looping_type.set(1 if is_loop else 0)

@@ -50,6 +50,16 @@ class EditablePiece:
             self.raw_image.size[1] - self.raw_image.size[1] * self.piece['bottom_crop']
         )
 
+    def _get_render_offset(self):
+        transformed_image = self.raw_image.crop(self._get_crop_box())
+        transformed_image = transformed_image.resize(
+            (int(transformed_image.size[0] * self.piece['x_scale']),
+             int(transformed_image.size[1] * self.piece['y_scale']))
+        )
+        transformed_image = transformed_image.rotate(self.piece['rotation'], expand=True)
+        w, h = transformed_image.size
+        return 400 - w/2, 300 - h/2
+
     def _update_items(self):
         self.clear()
 
@@ -59,19 +69,20 @@ class EditablePiece:
             (int(self.transformed_image.size[0]*self.piece['x_scale']),
              int(self.transformed_image.size[1]*self.piece['y_scale']))
         )
-        ox, oy = self.transformed_image.size
 
         # Rotation
         self.transformed_image = self.transformed_image.rotate(self.piece['rotation'], expand=True)
-        w, h = self.transformed_image.size
-
-        x = self.piece['x'] - w / 2 + ox / 2
-        y = self.piece['y'] - h / 2 + oy / 2
 
         # Transparency
         temp_img = self.transformed_image.copy()
         temp_img.putalpha(0)
         self.transformed_image = Image.blend(self.transformed_image, temp_img, 1-self.piece['alpha']/256)
+
+        # Render
+        # Center of the piece is the origin. No offset in game
+        offx, offy = self._get_render_offset()
+        x = self.piece['x'] + offx
+        y = self.piece['y'] + offy
         self.img = ImageTk.PhotoImage(self.transformed_image)
         self.image_id = self.canvas.create_image(
             x,
@@ -85,20 +96,24 @@ class EditablePiece:
         self.canvas.tag_bind(self.image_id, '<ButtonRelease-1>', self._stop_move)
 
         self.outline_id = self.canvas.create_rectangle(
-            self.piece['x'],
-            self.piece['y'],
-            self.piece['x']+self.img.width(),
-            self.piece['y']+self.img.height(),
+            self.piece['x'] + offx,
+            self.piece['y'] + offy,
+            self.piece['x']+self.img.width() + offx,
+            self.piece['y']+self.img.height() + offy,
             fill=''
         )
         rect = self._get_scale_rect()
-        self.scale_id = self.canvas.create_rectangle(rect['x'], rect['y'], rect['w'], rect['h'], fill='black')
+        self.scale_id = self.canvas.create_rectangle(
+            rect['x'] + offx, rect['y'] + offy, rect['w'] + offx, rect['h'] + offy, fill='black'
+        )
         self.canvas.tag_bind(self.scale_id, '<Button-1>', self._start_scale)
         self.canvas.tag_bind(self.scale_id, '<ButtonRelease-1>', self._stop_scale)
 
         for i in range(0, 4):
             rect = self._get_crop_rect(i)
-            self.crop_ids[i] = self.canvas.create_rectangle(rect['x'], rect['y'], rect['w'], rect['h'], fill='black')
+            self.crop_ids[i] = self.canvas.create_rectangle(
+                rect['x'] + offx, rect['y'] + offy, rect['w'] + offx, rect['h'] + offy, fill='black'
+            )
             self.canvas.tag_bind(self.crop_ids[i], '<Button-1>', self._start_crop)
             self.canvas.tag_bind(self.crop_ids[i], '<ButtonRelease-1>', self._stop_crop)
 

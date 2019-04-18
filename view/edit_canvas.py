@@ -35,7 +35,12 @@ class EditCanvas(tk.Frame):
         self.images = {
             v: ImageTk.PhotoImage(Image.open('resources/{}.png'.format(v))) for k, v in self.background_list.items()
         }
+        self.origins = {
+            'zoom': (125, 125),
+            'fullscreen': (400, 300)
+        }
         self.current_background = 'fullscreen_grid'
+        self.current_origin = self.origins['fullscreen']
 
         self.canvas = tk.Canvas(self, width=800, height=600)
         self.canvas.grid()
@@ -53,10 +58,21 @@ class EditCanvas(tk.Frame):
         self.canvas.delete(self.white_rect)
         self.current_background = background
 
-        w = 800 if 'fullscreen' in background else 250
-        h = 600 if 'fullscreen' in background else 250
-        self.white_rect = self.canvas.create_rectangle(0, 0, w, h, fill='white')
-        self.background = self.canvas.create_image(2, 2, image=self.images[self.current_background], anchor=tk.NW)
+        w = 800
+        h = 600
+        self.current_origin = self.origins['fullscreen']
+        if 'zoom' in background:
+            w = 250
+            h = 250
+            self.current_origin = self.origins['zoom']
+
+        x = 400-w/2
+        y = 300-w/2
+
+        self.white_rect = self.canvas.create_rectangle(x, y, x+w, y+h, fill='white')
+        self.background = self.canvas.create_image(
+            x+2, y+2, image=self.images[self.current_background], anchor=tk.NW
+        )
         self.canvas.tag_bind(self.background, '<Button-1>', self._check_click)
 
     def add_piece(self, piece):
