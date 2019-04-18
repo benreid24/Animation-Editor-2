@@ -5,6 +5,7 @@ from controller import pieces as pieces_controller
 from controller import actions as actions_controller
 from model import images as model
 from view import util
+from view.spritesheet_importer import SpritesheetImporter
 
 main_view = None
 image_list_view = None
@@ -43,6 +44,35 @@ def import_image():
         image_id = model.add_image(img, filename)
         image_list_view.add_image(image_id, img)
         actions_controller.add_image_action(image_id)
+
+
+def import_spritesheet_open():
+    global main_view
+    global image_list_view
+
+    filename = util.get_image_file()
+    if filename:
+        try:
+            img = Image.open(filename).convert(mode='RGBA')
+        except:
+            util.error('Failed to open image: ' + filename)
+            return
+        SpritesheetImporter(main_view.TK_ROOT, filename, img)
+
+
+def import_spritesheet(file, sheet, x, y, w, h, nc, nr):
+    for row in range(0, nr):
+        for col in range(0, nc):
+            crop_box = (
+                x + col*w,      # Left
+                y + row*h,      # Top
+                x + col*w + w,  # Left
+                y + row*h + h   # Bottom
+            )
+            img = sheet.crop(crop_box)
+            image_id = model.add_image(img, file)
+            actions_controller.add_image_action(image_id)
+    update_view()
 
 
 def delete_image():

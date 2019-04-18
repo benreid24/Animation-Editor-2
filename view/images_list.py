@@ -22,15 +22,23 @@ class ImageList(tk.LabelFrame):
 
         self.button_frame = tk.Frame(self)
         self.add_but = tk.Button(self.button_frame, text='Add to Frame', command=pieces_controller.add_from_image)
-        self.import_but = tk.Button(self.button_frame, text='Import', command=controller.import_image, background='#ff5555')
+        self.import_but = tk.Button(
+            self.button_frame, text='Import', command=controller.import_image, background='#ff5555'
+        )
+        self.import_sp_but = tk.Button(
+            self.button_frame, text='Import Spritesheet', command=controller.import_spritesheet_open, background='#22ff22'
+        )
         self.delete_but = tk.Button(self.button_frame, text='Delete', command=controller.delete_image)
         self.vert_but = tk.Button(self.button_frame, text='Clone via Vertical Flip', command=controller.clone_vertical)
-        self.hori_but = tk.Button(self.button_frame, text='Clone via Horizontal Flip', command=controller.clone_horizontal)
+        self.hori_but = tk.Button(
+            self.button_frame, text='Clone via Horizontal Flip', command=controller.clone_horizontal
+        )
         self.add_but.grid(row=0, column=0, pady=5, padx=3)
         self.import_but.grid(row=0, column=1, pady=5, padx=3)
-        self.delete_but.grid(row=0, column=2, pady=5, padx=3)
-        self.vert_but.grid(row=0, column=3, pady=5, padx=3)
-        self.hori_but.grid(row=0, column=4, pady=5, padx=3)
+        self.import_sp_but.grid(row=0, column=2, pady=5, padx=3)
+        self.delete_but.grid(row=0, column=3, pady=5, padx=3)
+        self.vert_but.grid(row=0, column=4, pady=5, padx=3)
+        self.hori_but.grid(row=0, column=5, pady=5, padx=3)
         self.button_frame.pack(side='top')
 
         self.list_frame = tk.Frame(self)
