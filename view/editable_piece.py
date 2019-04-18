@@ -96,8 +96,8 @@ class EditablePiece:
         self.canvas.tag_bind(self.image_id, '<ButtonRelease-1>', self._stop_move)
 
         self.outline_id = self.canvas.create_rectangle(
-            self.piece['x'] + offx,
-            self.piece['y'] + offy,
+            x,
+            y,
             self.piece['x']+self.img.width() + offx,
             self.piece['y']+self.img.height() + offy,
             fill=''
@@ -171,14 +171,18 @@ class EditablePiece:
     def _stop_scale(self, event):
         if self.state['scaling'] and self.state['active']:
             self.state['scaling'] = False
-            nw = event.x - self.piece['x']
-            nh = event.y - self.piece['y']
-            self.piece['x_scale'] = nw / self.raw_image.size[0] / (1 - self.piece['right_crop'] - self.piece['left_crop'])
-            self.piece['y_scale'] = nh / self.raw_image.size[1] / (1 - self.piece['top_crop'] - self.piece['bottom_crop'])
-            self._update_items()
             old = dict(self.piece)
-            old['x_scale'] = self.state['orig_scale'][0]
-            old['y_scale'] = self.state['orig_scale'][1]
+
+            offx, offy = self._get_render_offset()
+            nw = event.x - self.piece['x'] - offx
+            nh = event.y - self.piece['y'] - offy
+
+            self.piece['x_scale'] = nw / self.raw_image.size[0] /\
+                (1 - self.piece['right_crop'] - self.piece['left_crop'])
+            self.piece['y_scale'] = nh / self.raw_image.size[1] /\
+                (1 - self.piece['top_crop'] - self.piece['bottom_crop'])
+
+            self._update_items()
             controller.update_piece(old, self.piece)
 
     def _start_crop(self, event):

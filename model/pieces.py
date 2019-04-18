@@ -8,8 +8,8 @@ piece_template = {
     'image_id': None,
     'img': None,
 
-    'x': 300,
-    'y': 280,
+    'x': 0,
+    'y': 0,
     'rotation': 0,
     'alpha': 255,
 
