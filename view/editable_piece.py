@@ -59,14 +59,14 @@ class EditablePiece:
             (int(self.transformed_image.size[0]*self.piece['x_scale']),
              int(self.transformed_image.size[1]*self.piece['y_scale']))
         )
-        ox, oy = self.transformed_image.size
 
         # Rotation
         self.transformed_image = self.transformed_image.rotate(self.piece['rotation'], expand=True)
         w, h = self.transformed_image.size
 
-        x = self.piece['x'] - w / 2 + ox / 2
-        y = self.piece['y'] - h / 2 + oy / 2
+        # Center of the piece is the origin. No offset in game
+        x = self.piece['x'] - w / 2
+        y = self.piece['y'] - h / 2
 
         # Transparency
         temp_img = self.transformed_image.copy()
@@ -85,20 +85,24 @@ class EditablePiece:
         self.canvas.tag_bind(self.image_id, '<ButtonRelease-1>', self._stop_move)
 
         self.outline_id = self.canvas.create_rectangle(
-            self.piece['x'],
-            self.piece['y'],
-            self.piece['x']+self.img.width(),
-            self.piece['y']+self.img.height(),
+            self.piece['x'] - w/2,
+            self.piece['y'] - h/2,
+            self.piece['x']+self.img.width() - w/2,
+            self.piece['y']+self.img.height() - h/2,
             fill=''
         )
         rect = self._get_scale_rect()
-        self.scale_id = self.canvas.create_rectangle(rect['x'], rect['y'], rect['w'], rect['h'], fill='black')
+        self.scale_id = self.canvas.create_rectangle(
+            rect['x'] - w/2, rect['y'] - h/2, rect['w'] - w/2, rect['h'] -h/2, fill='black'
+        )
         self.canvas.tag_bind(self.scale_id, '<Button-1>', self._start_scale)
         self.canvas.tag_bind(self.scale_id, '<ButtonRelease-1>', self._stop_scale)
 
         for i in range(0, 4):
             rect = self._get_crop_rect(i)
-            self.crop_ids[i] = self.canvas.create_rectangle(rect['x'], rect['y'], rect['w'], rect['h'], fill='black')
+            self.crop_ids[i] = self.canvas.create_rectangle(
+                rect['x'] - w/2, rect['y'] - h/2, rect['w'] - w/2, rect['h'] - h/2, fill='black'
+            )
             self.canvas.tag_bind(self.crop_ids[i], '<Button-1>', self._start_crop)
             self.canvas.tag_bind(self.crop_ids[i], '<ButtonRelease-1>', self._stop_crop)
 
