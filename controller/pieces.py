@@ -69,6 +69,42 @@ def update_piece(old_piece, new_piece):
     _reorder_canvas()
 
 
+def _estimate_new_scale(oldimg, newimg, piece):
+    old = oldimg.copy()
+    new = newimg.copy()
+
+    old = old.resize(
+        (int(old.size[0] * piece['x_scale']),
+         int(old.size[1] * piece['y_scale']))
+    )
+    old = old.rotate(piece['rotation'], expand=True)
+    oldw, oldh = old.size
+    oldw *= 1 - piece['right_crop'] - piece['left_crop']
+    oldh *= 1 - piece['top_crop'] - piece['bottom_crop']
+
+    new = new.rotate(piece['rotation'], expand=True)
+    nw, nh = new.size
+    nw *= 1 - piece['right_crop'] - piece['left_crop']
+    nh *= 1 - piece['top_crop'] - piece['bottom_crop']
+
+    return oldw/nw, oldh/nh
+
+
+def change_image(piece):
+    old = dict(piece)
+    oldimg = piece['img'].copy()
+    piece['image_id'] = images_view.get_selected_image()
+    piece['img'] = images_model.get_image(piece['image_id'])
+    piece['x_scale'], piece['y_scale'] = _estimate_new_scale(oldimg, piece['img'], piece)
+
+    pieces_view.update_piece(piece)
+    canvas_view.update_piece(piece)
+    model.update_piece(frames_model.active_frame(), piece)
+    actions_controller.update_piece_action(frames_model.active_frame(), old, piece)
+    # TODO Ensure undo/redo supports this
+    _reorder_canvas()
+
+
 def remove_piece(piece_id=None):
     if piece_id is not None:
         for fid in model.pieces.keys():
