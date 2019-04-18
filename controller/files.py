@@ -100,7 +100,8 @@ def export(file=None):
 def preview():
     file = 'tmp/__preview_temp{}.anim'.format(time.time())
     export(file)
-    subprocess.call(['Previewer.exe', file])
+    subprocess.Popen(['Previewer.exe', file])
+    time.sleep(0.5)
     os.remove(file)
     os.remove('.'.join(file.split('.')[:-1])+'.png')
 
