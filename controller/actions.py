@@ -199,10 +199,11 @@ def toggle_loop_action():
     add_action(action)
 
 
-def batch_action(sframe, eframe, percent, frame_len, xpos, ypos, xscale, yscale, alpha, rot):
+def batch_action(piece_id, sframe, eframe, percent, frame_len, xpos, ypos, xscale, yscale, alpha, rot):
     action = {
         'type': 'batch',
         'data': {
+            'piece_id': piece_id,
             'start_frame': sframe,
             'end_frame': eframe,
             'percent': percent,

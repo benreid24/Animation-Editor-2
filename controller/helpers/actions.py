@@ -80,6 +80,7 @@ def undo():
         elif action['type'] == 'batch':
             if data['percent'] == 0:
                 batch_controller.batch_shift(
+                    data['piece_id'],
                     data['start_frame'],
                     data['end_frame'],
                     0,
@@ -96,7 +97,9 @@ def undo():
                 a = (-data['alpha']) / (100 + data['alpha']) * 100
                 r = (-data['rot']) / (100 + data['rot']) * 100
                 fl = (-data['frame_len']) / (100 + data['frame_len']) * 100
-                batch_controller.percent_shift(data['start_frame'], data['end_frame'], fl, xs, ys, a, r)
+                batch_controller.percent_shift(
+                    data['piece_id'], data['start_frame'], data['end_frame'], fl, xs, ys, a, r
+                )
 
         elif action['type'] == 'interpolate':
             s = frames_model.get_frame_position(data['start_frame'])+1
@@ -186,6 +189,7 @@ def redo():
         elif action['type'] == 'batch':
             if data['percent'] == 0:
                 batch_controller.batch_shift(
+                    data['piece_id'],
                     data['start_frame'],
                     data['end_frame'],
                     data['frame_len'],
@@ -198,6 +202,7 @@ def redo():
                 )
             else:
                 batch_controller.percent_shift(
+                    data['piece_id'],
                     data['start_frame'],
                     data['end_frame'],
                     data['frame_len'],

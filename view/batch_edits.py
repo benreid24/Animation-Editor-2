@@ -53,11 +53,16 @@ class BatchEdits(tk.LabelFrame):
         start_frame = start_frame-1 if start_frame != 0 else start_frame
         end_frame = end_frame - 1
         controller.batch_edit(
-            start_frame, end_frame, self.change_type.get(), frame_len, xpos, ypos, xscale, yscale, alpha, rot
+            self.frame_sel.get(), start_frame, end_frame, self.change_type.get(),
+            frame_len, xpos, ypos, xscale, yscale, alpha, rot
         )
 
     def __init__(self, master):
         tk.LabelFrame.__init__(self, master, text='Batch Edit')
+
+        self.frame_sel = tk.IntVar()
+        self.frame_but = tk.Checkbutton(self, text='Selected Piece Only', variable=self.frame_sel)
+        self.frame_but.grid(row=0, column=0)
 
         self.clear_but = tk.Button(self, text='Clear', command=self._clear)
         self.clear_but.grid(row=0, column=1, padx=3)
