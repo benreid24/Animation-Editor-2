@@ -191,6 +191,14 @@ def save_action():
     add_action(action)
 
 
+def toggle_loop_action():
+    action = {
+        'type': 'toggle_loop',
+        'data': {}
+    }
+    add_action(action)
+
+
 def batch_action(sframe, eframe, percent, frame_len, xpos, ypos, xscale, yscale, alpha, rot):
     action = {
         'type': 'batch',

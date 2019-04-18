@@ -5,12 +5,15 @@ from controller import actions as actions_controller
 from view import util
 
 view_options = None
+loop_view = None
 
 
 def init(main_view):
     global view_options
+    global loop_view
 
     view_options = main_view.get_frame_controls()
+    loop_view = main_view.get_actions_panel()
     view_options.set_length(model.frames[0]['length'])
     model.init()
 
@@ -19,6 +22,11 @@ def reset():
     model.init()
     view_options.set_length(model.frames[0]['length'])
     update_view()
+
+
+def update_looping(is_loop):
+    model.is_loop = True if is_loop == 1 else False
+    actions_controller.toggle_loop_action()
 
 
 def active_frame_index():
@@ -34,6 +42,7 @@ def update_view():
     view_options.set_frame_count(len(model.frames))
     view_options.set_active(i)
     view_options.set_length(length)
+    loop_view.set_is_loop(model.is_loop)
 
 
 def new_frame_append():
