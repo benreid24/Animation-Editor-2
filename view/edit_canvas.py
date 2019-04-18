@@ -24,37 +24,39 @@ class EditCanvas(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master, bd=2)
 
-        self.vgrid = ImageTk.PhotoImage(Image.open('resources/grid.png'))
-        self.battle = ImageTk.PhotoImage(Image.open('resources/battle.png'))
-        self.battlegrid = ImageTk.PhotoImage(Image.open('resources/battlegrid.png'))
+        self.background_list = {
+            '250x250 Blank': 'zoomed_blank',
+            '250x250 Lines': 'zoomed_lines',
+            '250x250 Grid': 'zoomed_grid',
+            'Fullscreen Blank': 'fullscreen_blank',
+            'Fullscreen Lines': 'fullscreen_lines',
+            'Fullscreen Grid': 'fullscreen_grid'
+        }
+        self.images = {
+            v: ImageTk.PhotoImage(Image.open('resources/{}.png'.format(v))) for k, v in self.background_list.items()
+        }
+        self.current_background = 'fullscreen_grid'
 
         self.canvas = tk.Canvas(self, width=800, height=600)
         self.canvas.grid()
-        self.background = self.canvas.create_image(2, 2, image=self.battle, anchor=tk.NW)
+
+        self.white_rect = self.canvas.create_rectangle(0, 0, 800, 600, fill='white')
+        self.background = self.canvas.create_image(2, 2, image=self.images[self.current_background], anchor=tk.NW)
         self.canvas.tag_bind(self.background, '<Button-1>', self._check_click)
 
         self.pieces = []
 
         self.grid(row=0, column=0, pady=3, padx=3)
 
-    def set_blank(self):
+    def set_background(self, background):
         self.canvas.delete(self.background)
-        self.background = self.canvas.create_rectangle(0, 0, 800, 600, fill='white')
-        self.canvas.tag_bind(self.background, '<Button-1>', self._check_click)
+        self.canvas.delete(self.white_rect)
+        self.current_background = background
 
-    def set_battle(self):
-        self.canvas.delete(self.background)
-        self.background = self.canvas.create_image(2, 2, image=self.battle, anchor=tk.NW)
-        self.canvas.tag_bind(self.background, '<Button-1>', self._check_click)
-
-    def set_grid(self):
-        self.canvas.delete(self.background)
-        self.background = self.canvas.create_image(2, 2, image=self.vgrid, anchor=tk.NW)
-        self.canvas.tag_bind(self.background, '<Button-1>', self._check_click)
-
-    def set_battle_grid(self):
-        self.canvas.delete(self.background)
-        self.background = self.canvas.create_image(2, 2, image=self.battlegrid, anchor=tk.NW)
+        w = 800 if 'fullscreen' in background else 250
+        h = 600 if 'fullscreen' in background else 250
+        self.white_rect = self.canvas.create_rectangle(0, 0, w, h, fill='white')
+        self.background = self.canvas.create_image(2, 2, image=self.images[self.current_background], anchor=tk.NW)
         self.canvas.tag_bind(self.background, '<Button-1>', self._check_click)
 
     def add_piece(self, piece):

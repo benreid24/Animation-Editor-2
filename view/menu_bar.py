@@ -17,7 +17,7 @@ class MenuBar(tk.Menu):
     def _bgnd_bgrid(self):
         self.editor.edit_canvas.set_battle_grid()
 
-    def __init__(self, root):
+    def __init__(self, root, backgrounds):
         tk.Menu.__init__(self, root)
         self.editor = None
 
@@ -39,10 +39,12 @@ class MenuBar(tk.Menu):
         self.add_cascade(label="Edit", menu=self.edit_menu)
 
         self.bgnd_menu = tk.Menu(self, tearoff=0)
-        self.bgnd_menu.add_command(label="Blank", command=self._bgnd_blank)
-        self.bgnd_menu.add_command(label="Battle Template", command=self._bgnd_bat)
-        self.bgnd_menu.add_command(label="Grid", command=self._bgnd_grid)
-        self.bgnd_menu.add_command(label="Battle Template Grid", command=self._bgnd_bgrid)
+        for text, value in backgrounds.items():
+            def set_bgnd(me=self, bgnd=value):
+                me.editor.edit_canvas.set_background(bgnd)
+
+            self.bgnd_menu.add_command(label=text, command=set_bgnd)
+
         self.add_cascade(label="Background", menu=self.bgnd_menu)
 
     def set_editor(self, e):

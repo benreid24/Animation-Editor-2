@@ -16,10 +16,10 @@ class AnimationEditor:
         self.TK_ROOT.resizable(True, True)
         self.TK_ROOT.iconbitmap('resources/icon.ico')
 
-        self.menu_bar = MenuBar(self.TK_ROOT)
         self.edit_canvas = EditCanvas(self.TK_ROOT)
         self.controls = Controls(self.TK_ROOT)
         self.image_list = ImageList(self.TK_ROOT)
+        self.menu_bar = MenuBar(self.TK_ROOT, self.edit_canvas.background_list)
 
         self.TK_ROOT.configure(menu=self.menu_bar)
         self.menu_bar.set_editor(self)
