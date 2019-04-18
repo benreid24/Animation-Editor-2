@@ -16,10 +16,10 @@ int main(int argc, char* argv[]) {
 
     string animfile = argv[1];
     Animation anim(animPool.loadResource(animfile));
-    anim.setPosition(Vector2f(0,0));
+    anim.setPosition(Vector2f(400,300));
 
     Texture bgndTexture;
-    bgndTexture.loadFromFile("resources/battle.png");
+    bgndTexture.loadFromFile("resources/fullscreen_lines.png");
     Sprite bgnd;
     bgnd.setTexture(bgndTexture);
 
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
         }
         anim.update();
 
-        window.clear();
+        window.clear(Color::White);
         window.draw(bgnd);
         anim.draw(&window);
         window.display();
