@@ -1,6 +1,11 @@
+import os
+
 import tkinter.messagebox as mbox
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 import tkinter as tk
+
+EXPORT_DIR = os.getcwd() + '/Resources/Media/Animations'
+print(EXPORT_DIR)
 
 
 def popup(title, message):
@@ -46,5 +51,5 @@ def get_export_file(folder=''):
         title='Export Animation',
         defaultextension='.anim',
         filetypes=[('Animations', '*.anim')],
-        initialdir=folder
+        initialdir=EXPORT_DIR
     )
