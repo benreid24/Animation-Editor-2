@@ -4,8 +4,7 @@ import tkinter.messagebox as mbox
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 import tkinter as tk
 
-EXPORT_DIR = os.getcwd() + '/Resources/Media/Animations'
-print(EXPORT_DIR)
+EXPORT_DIR = os.path.abspath('../../Resources/Media/Animations')
 
 
 def popup(title, message):
