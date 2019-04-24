@@ -73,7 +73,7 @@ def create_sprite_sheet(image_list):
     return image_rects, sheet
 
 
-def save_anim(path, anim_name, frames, pieces, images):
+def save_anim(path, anim_name, frames, pieces, images, is_loop):
     images_list = [v for k, v in images.items()]
     image_rects, sheet = create_sprite_sheet(images_list)
     sheet_file = os.path.join(path, anim_name+'.png')
@@ -81,7 +81,7 @@ def save_anim(path, anim_name, frames, pieces, images):
 
     with open(anim_file, 'wb') as file:
         data = _pack_field('texture', anim_name+'.png')
-        data += _pack_field('loop', 0)
+        data += _pack_field('loop', is_loop)
         data += _pack_field('numFrames', len(frames))
         for frame in frames:
             data += _pack_field('length', frame['length'])
@@ -96,7 +96,7 @@ def save_anim(path, anim_name, frames, pieces, images):
                 rect[1] += rect[3] * piece['top_crop']
                 rect[2] *= (1 - piece['left_crop'] - piece['right_crop'])
                 rect[3] *= (1 - piece['top_crop'] - piece['bottom_crop'])
-                x = piece['x'] + piece['x_scale']*rect[2]/2 - rect[2]/2  # Peoplemon offset requirement :/
+                x = piece['x'] + piece['x_scale']*rect[2]/2 - rect[2]/2
                 y = piece['y'] + piece['y_scale']*rect[3]/2 - rect[3]/2
                 r = (-int(piece['rotation'])) % 360  # Got it backwards, oops
 

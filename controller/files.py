@@ -94,7 +94,9 @@ def export(file=None):
         base = os.path.basename(file)
         base = os.path.splitext(base)[0]
         folder = os.path.dirname(file)
-        export_helper.save_anim(folder, base, frames_model.frames, pieces_model.pieces, images_model.image_list)
+        export_helper.save_anim(
+            folder, base, frames_model.frames, pieces_model.pieces, images_model.image_list, frames_model.is_loop
+        )
 
 
 def preview():
