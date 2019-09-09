@@ -94,6 +94,8 @@
 		<Unit filename="File.cpp" />
 		<Unit filename="File.hpp" />
 		<Unit filename="GameClock.hpp" />
+		<Unit filename="Properties.cpp" />
+		<Unit filename="Properties.hpp" />
 		<Unit filename="ResourcePool.cpp" />
 		<Unit filename="ResourcePool.hpp" />
 		<Unit filename="ResourceTypes.hpp" />

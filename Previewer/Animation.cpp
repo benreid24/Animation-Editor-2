@@ -1,6 +1,7 @@
 #include "Animation.hpp"
 #include "File.hpp"
 #include "ResourcePool.hpp"
+#include "Properties.hpp"
 #include <iostream>
 using namespace std;
 using namespace sf;
@@ -27,10 +28,15 @@ void AnimationSource::load(string file)
     File input(file);
     AnimationFrame temp;
     int maxL = 0;
-    string tempStr = File::getPath(file);
 
+    string path = File::getPath(file);
     file = input.getString();
-    sheet = imagePool.loadResource("tmp/"+file);
+    if (!FileExists(path+file))
+        path = Properties::SpriteSheetPath;
+    if (!FileExists(path+file))
+        path = "tmp/";
+    sheet = imagePool.loadResource(path+file);
+
     loop = bool(input.get<uint8_t>());
     int numFrames = input.get<uint16_t>();
     frames.resize(numFrames);

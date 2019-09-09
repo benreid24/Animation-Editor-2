@@ -9,13 +9,14 @@ using namespace std;
 using namespace sf;
 
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
+    if (argc != 2 && argc != 3) {
         cout << "NO!\n";
         return 1;
     }
 
     string animfile = argv[1];
-    Animation anim(animPool.loadResource(animfile));
+    string prefix = argc == 3 ? argv[2] : "";
+    Animation anim(animPool.loadResource(prefix+animfile));
     anim.setPosition(Vector2f(400,300));
 
     Texture bgndTexture;
