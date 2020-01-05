@@ -4,3 +4,11 @@ build
 *__pycache__*
 *.ini
 tmp
+AnimationEditor.exe
+lib/
+python36.dll
+tcl/
+tcl86t.dll
+tk/
+tk86t.dll
+working/

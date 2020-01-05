@@ -1,6 +1,6 @@
 import struct
 import os
-import math
+import pathlib
 
 from PIL import Image
 
@@ -78,6 +78,7 @@ def save_anim(path, anim_name, frames, pieces, images, is_loop):
     image_rects, sheet = create_sprite_sheet(images_list)
     sheet_file = os.path.join(path, anim_name+'.png')
     anim_file = os.path.join(path, anim_name+'.anim')
+    pathlib.Path('tmp').mkdir(exist_ok=True)
 
     with open(anim_file, 'wb') as file:
         data = _pack_field('texture', anim_name+'.png')
