@@ -12,3 +12,4 @@ tcl86t.dll
 tk/
 tk86t.dll
 working/
+*.dll
