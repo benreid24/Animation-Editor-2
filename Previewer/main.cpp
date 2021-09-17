@@ -53,8 +53,8 @@ int main(int argc, char* argv[]) {
         anim.render(window, 0.f);
         window.display();
 
-        sf::sleep(sf::milliseconds(15));
         frameTime = timer.getElapsedTime().asSeconds();
+        sf::sleep(sf::milliseconds(15));
     }
 
     return 0;
