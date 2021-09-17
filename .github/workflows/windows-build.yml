@@ -27,11 +27,11 @@ jobs:
         run: pip install wheel && pip install -r requirements.txt
 
       - name: Compile Editor
-        run: cd build && make
+        run: python compile.py build
 
       - name: Package Project
         run: |
           mkdir AnimationEditor
           mv resources AnimationEditor
-          mv -r build/exe.win-amd64-3.8/* AnimationEditor
+          mv -r build/exe.win-amd64-3.9/* AnimationEditor
           Compress-Archive -Path AnimationEditor -DestinationPath Windows.zip
