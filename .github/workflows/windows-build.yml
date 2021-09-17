@@ -21,10 +21,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.8
 
       - name: Setup Environment
-        run: pip install -r requirements.txt
+        run: pip install wheel && pip install -r requirements.txt
 
       - name: Compile Editor
         run: cd build && make
@@ -33,5 +33,5 @@ jobs:
         run: |
           mkdir AnimationEditor
           mv resources AnimationEditor
-          mv -r build/exe.win-amd64-3.9/* AnimationEditor
+          mv -r build/exe.win-amd64-3.8/* AnimationEditor
           Compress-Archive -Path AnimationEditor -DestinationPath Windows.zip
