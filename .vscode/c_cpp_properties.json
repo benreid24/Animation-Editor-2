@@ -1,0 +1,32 @@
+{
+    "env": {
+        "inclpath": [
+            "${workspaceFolder}/Previewer/lib/BLIB/lib/SFML/include",
+            "${workspaceFolder}/Previewer/lib/BLIB/include"
+        ],
+        "compiler": "C:/MinGW64/mingw64/bin/g++.exe"
+    },
+    "configurations": [
+        {
+            "name": "Previewer",
+            "intelliSenseMode": "gcc-x64",
+            "includePath": [
+                "${inclpath}"
+            ],
+            "defines": [
+                "PEOPLEMON_DEBUG"
+            ],
+            "compilerPath": "${compiler}",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+    ],
+    "version": 4
+}
