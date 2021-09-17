@@ -28,6 +28,12 @@ jobs:
       - name: Compile Editor
         run: python compile.py build
 
+      - name: Compile Previewer
+        run: |
+          cd Previewer
+          cmake -DCMAKE_BUILD_TYPE=Release -G \"Unix Makefiles\" -S . -B ./build
+          cd build && make
+
       - name: Package Project
         run: |
           mkdir AnimationEditor
