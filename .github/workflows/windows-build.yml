@@ -1,0 +1,37 @@
+on:
+  repository_dispatch:
+    types: [builds]
+  pull_request:
+    branches: [master]
+
+name: Build Binaries
+
+jobs:
+  windows_build:
+    name: Windows Build
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Setup Environment
+        run: pip install -r requirements.txt
+
+      - name: Compile Editor
+        run: cd build && make
+
+      - name: Package Project
+        run: |
+          mkdir AnimationEditor
+          mv resources AnimationEditor
+          mv -r build/exe.win-amd64-3.9/* AnimationEditor
+          Compress-Archive -Path AnimationEditor -DestinationPath Windows.zip
