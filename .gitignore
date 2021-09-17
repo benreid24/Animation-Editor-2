@@ -5,7 +5,6 @@ build
 *.ini
 tmp
 AnimationEditor.exe
-lib/
 python36.dll
 tcl/
 tcl86t.dll

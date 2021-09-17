@@ -1,0 +1,53 @@
+on:
+  repository_dispatch:
+    types: [builds]
+
+name: Build Binaries
+
+jobs:
+  windows_build:
+    name: Windows Build
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Setup Environment
+        run: pip install wheel && pip install -r requirements.txt
+
+      - name: Compile Editor
+        run: python compile.py build
+
+      - name: Compile Previewer
+        run: |
+          cd Previewer
+          cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -S . -B ./build
+          cd build && make
+
+      - name: Package Project
+        run: |
+          mkdir AnimationEditor
+          mv resources AnimationEditor
+          mv build/exe.win-amd64-3.9/* AnimationEditor
+          mv Previewer/Previewer.exe AnimationEditor/
+          cp Previewer/openal32.dll AnimationEditor/
+          Compress-Archive -Path AnimationEditor -DestinationPath Windows.zip
+
+      - name: Upload Package
+        id: upload-windows-package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.client_payload.release_url }}
+          asset_path: ./Windows.zip
+          asset_name: Windows.zip
+          asset_content_type: application/zip
