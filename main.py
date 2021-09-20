@@ -1,3 +1,6 @@
+import os
+import sys
+
 from view.animation_editor import AnimationEditor
 from controller import images as images_controller
 from controller import pieces as pieces_controller
@@ -8,6 +11,10 @@ from controller import batch as batch_controller
 
 
 def main():
+    if getattr(sys, 'frozen', False):
+        path = os.path.dirname(sys.executable)
+        os.chdir(path)
+
     app = AnimationEditor()
 
     images_controller.init(app)

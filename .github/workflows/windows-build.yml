@@ -35,7 +35,6 @@ jobs:
       - name: Package Project
         run: |
           mkdir AnimationEditor
-          mv resources AnimationEditor
           mv build/exe.win-amd64-3.9/* AnimationEditor
           mv Previewer/Previewer.exe AnimationEditor/
           cp Previewer/openal32.dll AnimationEditor/
