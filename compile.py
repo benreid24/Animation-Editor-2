@@ -19,6 +19,7 @@ options = {
         'include_files': [
             os.path.join(PYTHON_INSTALL_DIR, 'DLLs', 'tk86t.dll'),
             os.path.join(PYTHON_INSTALL_DIR, 'DLLs', 'tcl86t.dll'),
+            'resources',
          ],
     },
 }
