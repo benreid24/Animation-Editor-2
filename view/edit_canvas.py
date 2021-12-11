@@ -30,14 +30,17 @@ class EditCanvas(tk.Frame):
             '250x250 Grid': 'zoomed_grid',
             'Fullscreen Blank': 'fullscreen_blank',
             'Fullscreen Lines': 'fullscreen_lines',
-            'Fullscreen Grid': 'fullscreen_grid'
+            'Fullscreen Grid': 'fullscreen_grid',
+            'Peoplemon NPC Guide': 'npc',
+            'Peoplemon Tile Guide': 'tile'
         }
         self.images = {
             v: ImageTk.PhotoImage(Image.open('resources/{}.png'.format(v))) for k, v in self.background_list.items()
         }
         self.origins = {
             'zoom': (125, 125),
-            'fullscreen': (400, 300)
+            'fullscreen': (400, 300),
+            'peoplemon': (64, 64)
         }
         self.current_background = 'fullscreen_grid'
         self.current_origin = self.origins['fullscreen']
@@ -65,9 +68,13 @@ class EditCanvas(tk.Frame):
             w = 250
             h = 250
             self.current_origin = self.origins['zoom']
+        elif background in ['npc', 'tile']:
+            w = 128
+            h = 128
+            self.current_origin = self.origins['peoplemon']
 
         x = 400-w/2
-        y = 300-w/2
+        y = 300-h/2
 
         self.white_rect = self.canvas.create_rectangle(x, y, x+w, y+h, fill='white')
         self.background = self.canvas.create_image(
