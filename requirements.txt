@@ -2,5 +2,5 @@ cx-Freeze==6.8
 cx-Logging==3.0
 idna==3.2
 importlib-metadata==4.8.1
-Pillow==8.3.2
+Pillow==9.0.0
 zipp==3.5.0
