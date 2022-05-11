@@ -20,7 +20,8 @@ FIELD_TYPE_MAP = {
     'xOff': '=i',
     'yOff': '=i',
     'rotation': '=I',
-    'alpha': '=B'
+    'alpha': '=B',
+    'centerShards': '=B'
 }
 
 
@@ -111,5 +112,6 @@ def save_anim(path, anim_name, frames, pieces, images, is_loop):
                 data += _pack_field('yOff', int(y))
                 data += _pack_field('rotation', r)
                 data += _pack_field('alpha', int(piece['alpha']))
+        data += _pack_field('centerShards', 1)
         file.write(data)
         sheet.save(sheet_file)
